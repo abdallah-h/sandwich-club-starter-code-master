@@ -30,6 +30,12 @@ public class DetailActivity extends AppCompatActivity {
 
         ImageView ingredientsIv = findViewById(R.id.image_iv);
 
+        //TextView Intialization
+        origin = (TextView) findViewById(R.id.origin_tv);
+        description = (TextView) findViewById(R.id.description_tv);
+        ingredients = (TextView) findViewById(R.id.ingredients_tv);
+        alsoKnownAs = (TextView) findViewById(R.id.also_known_tv);
+
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -57,24 +63,29 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
-        origin.setText(sandwich.getPlaceOfOrigin());
+
+        //display place of origin
+        if(sandwich.getPlaceOfOrigin().isEmpty()) {
+            origin.setText("Unknown");
+        }else{
+            origin.setText(sandwich.getPlaceOfOrigin());
+        }
+
+        //display description
         description.setText(sandwich.getDescription());
 
         //display ingredients array
         List<String> ingredientsList = sandwich.getIngredients();
-        ingredients.setText("");
-        for (int i = 0; i < ingredientsList.size(); i++){
-            ingredients.append(ingredientsList.get(i) + " , ");
-        }
+        ingredients.setText(ingredientsList.toString());
 
-        //display ingredients array
+
+        //display known as  array
         List<String> alsoKnownAsList = sandwich.getAlsoKnownAs();
-        alsoKnownAs.setText("");
-        for (int i = 0; i < alsoKnownAsList.size(); i++){
-            alsoKnownAs.append(alsoKnownAsList.get(i) + " , ");
+        if(alsoKnownAsList.isEmpty()){
+            alsoKnownAs.setText("Unknown");
+        }else {
+            alsoKnownAs.setText(alsoKnownAsList.toString());
         }
-
 
         Picasso.with(this)
                 .load(sandwich.getImage())
@@ -87,17 +98,5 @@ public class DetailActivity extends AppCompatActivity {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
-
-    private void populateUI() {
-
-
-
-        //TextView Intialization
-        origin = (TextView) findViewById(R.id.origin_tv);
-        description = (TextView) findViewById(R.id.description_tv);
-        ingredients = (TextView) findViewById(R.id.ingredients_tv);
-        alsoKnownAs = (TextView) findViewById(R.id.also_known_tv);
-
-
-    }
+    
 }
